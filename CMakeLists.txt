@@ -24,13 +24,14 @@ option( MESHVIEW_USE_SYSTEM_EIGEN
 option( MESHVIEW_USE_SYSTEM_GLFW
     "Use system glfw rather than the included glfw submodule if available" ON )
 option( MESHVIEW_BUILD_IMGUI "Build with Dear ImGui integrated GUI" ON )
+option( MESHVIEW_BUILD_EDITOR "Build the editor program" ON )
 option( MESHVIEW_BUILD_EXAMPLE "Build the example program" ON )
 option( MESHVIEW_BUILD_INSTALL "Build the install target" ON )
 option( MESHVIEW_BUILD_PYTHON "Build Python bindings" OFF )
 option( MESHVIEW_USE_FFAST_MATH "Use -ffast-math" OFF )
 
 set( CMAKE_CXX_STACK_SIZE "10000000" )
-set( CMAKE_CXX_STANDARD 14 )
+set( CMAKE_CXX_STANDARD 17 )
 set( CMAKE_CXX_STANDARD_REQUIRED ON)
 set( CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake" )
 
@@ -237,6 +238,12 @@ if (MESHVIEW_BUILD_INSTALL)
             DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/meshview/imgui")
     endif()
 endif(MESHVIEW_BUILD_INSTALL)
+
+if (MESHVIEW_BUILD_EDITOR)
+    add_executable( editor editor.cpp )
+    target_link_libraries( editor ${PROJ_LIB_NAME} )
+    set_target_properties( editor PROPERTIES OUTPUT_NAME "meshview-editor" )
+endif()
 
 if (MESHVIEW_BUILD_EXAMPLE)
     add_executable( example example.cpp )
